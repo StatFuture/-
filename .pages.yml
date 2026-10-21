@@ -1,0 +1,466 @@
+media:
+- name: images
+  label: 图片
+  input: media/images
+  output: media/images
+  extensions:
+  - jpg
+  - jpeg
+  - png
+  - webp
+  rename: safe
+- name: files
+  label: 资料附件
+  input: media/files
+  output: media/files
+  extensions:
+  - pdf
+  - doc
+  - docx
+  - ppt
+  - pptx
+  - xls
+  - xlsx
+  - zip
+  rename: safe
+- name: videos
+  label: 短视频
+  input: media/videos
+  output: media/videos
+  extensions:
+  - mp4
+  - webm
+  rename: safe
+content:
+- name: profile
+  label: 个人资料与网站设置
+  type: file
+  path: data/profile.json
+  format: json
+  fields:
+  - name: profile
+    label: 个人资料
+    type: object
+    list: true
+    fields:
+    - name: label
+      label: 字段名称
+      type: string
+    - name: value
+      label: 字段内容
+      type: text
+  - name: programs
+    label: 指导研究生专业
+    type: object
+    list: true
+    fields:
+    - name: label
+      label: 学位类型
+      type: string
+    - name: value
+      label: 专业名称
+      type: string
+  - name: overview
+    label: 个人概况
+    type: text
+  - name: directions
+    label: 研究方向
+    type: string
+    list: true
+  - name: team
+    label: 团队介绍
+    type: text
+  - name: portrait
+    label: 教师照片
+    type: image
+    options:
+      media: images
+  - name: admissions
+    label: 招生链接
+    type: object
+    list: true
+    fields:
+    - name: label
+      label: 链接标题
+      type: string
+    - name: url
+      label: 网址
+      type: string
+  - name: pageSize
+    label: 每页条数
+    type: select
+    options:
+      values:
+      - name: '10'
+        label: 10条
+      - name: '20'
+        label: 20条
+      - name: '50'
+        label: 50条
+- name: news
+  label: 新闻动态
+  type: collection
+  path: content/news
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 新闻标题
+    type: string
+    required: true
+  - name: date
+    label: 日期
+    type: date
+    options:
+      format: yyyy-MM-dd
+  - name: summary
+    label: 摘要
+    type: text
+  - name: body
+    label: 正文
+    type: text
+    description: 支持多段文字；配图、视频和附件在下方单独添加。
+  - name: pinned
+    label: 置顶
+    type: boolean
+  - &id004
+    name: images
+    label: 配图
+    type: image
+    list: true
+    options:
+      media: images
+  - &id005
+    name: attachment
+    label: 资料附件
+    type: file
+    options:
+      media: files
+  - &id006
+    name: video
+    label: 上传短视频
+    type: file
+    options:
+      media: videos
+    description: 试验约定单个不超过20 MB；长视频请填写播放链接。
+  - &id007
+    name: videoUrl
+    label: 视频播放链接
+    type: string
+    description: 可填写 https 视频文件或视频平台页面网址。
+  - &id008
+    name: poster
+    label: 视频封面
+    type: image
+    options:
+      media: images
+  - &id001
+    name: published
+    label: 在网站显示
+    type: boolean
+    description: 勾选后，保存将触发部署；部署完成后访客可见。未勾选的记录不会进入公开页面。
+  - &id002
+    name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+- name: members
+  label: 团队成员
+  type: collection
+  path: content/members
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - name
+    - published
+    - order
+    primary: name
+    sort:
+    - order
+    - name
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: name
+    label: 姓名
+    type: string
+    required: true
+  - name: role
+    label: 职务或身份
+    type: string
+  - name: photo
+    label: 成员照片
+    type: image
+    options:
+      media: images
+  - name: bio
+    label: 简介
+    type: text
+  - name: email
+    label: 邮箱
+    type: string
+  - name: link
+    label: 个人主页链接
+    type: string
+  - *id001
+  - *id002
+- name: papers
+  label: 论文成果
+  type: collection
+  path: content/papers
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 列表标题
+    type: string
+    required: true
+  - name: citation
+    label: 完整引文
+    type: text
+    required: true
+  - name: doi
+    label: DOI
+    type: string
+  - name: link
+    label: 论文网址
+    type: string
+  - *id001
+  - *id002
+- name: projects
+  label: 科研项目
+  type: collection
+  path: content/projects
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 项目名称
+    type: string
+    required: true
+  - &id003
+    name: fields
+    label: 详细信息
+    type: object
+    list:
+      collapsible: true
+    fields:
+    - name: label
+      label: 字段名称
+      type: string
+    - name: value
+      label: 字段内容
+      type: text
+  - *id001
+  - *id002
+- name: patents
+  label: 专利成果
+  type: collection
+  path: content/patents
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 专利名称
+    type: string
+    required: true
+  - name: lines
+    label: 详情
+    type: text
+    list: true
+  - *id001
+  - *id002
+- name: books
+  label: 教材著作
+  type: collection
+  path: content/books
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 教材名称
+    type: string
+    required: true
+  - *id003
+  - *id001
+  - *id002
+- name: awards
+  label: 荣誉奖励
+  type: collection
+  path: content/awards
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 列表标题
+    type: string
+    required: true
+  - name: text
+    label: 荣誉内容
+    type: text
+    required: true
+  - *id001
+  - *id002
+- name: resources
+  label: 资料图片视频
+  type: collection
+  path: content/resources
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 资料标题
+    type: string
+    required: true
+  - name: body
+    label: 说明
+    type: text
+  - name: target
+    label: 放置栏目
+    type: select
+    options:
+      values:
+      - name: resources
+        label: 资料与视频
+      - name: profile
+        label: 个人资料
+      - name: overview
+        label: 个人概况
+      - name: research
+        label: 研究领域
+      - name: projects
+        label: 科研项目
+      - name: results
+        label: 成果与荣誉
+      - name: admission
+        label: 招生信息
+      - name: team
+        label: 团队展示
+  - name: position
+    label: 栏目中的位置
+    type: select
+    options:
+      values:
+      - name: before
+        label: 内容之前
+      - name: after
+        label: 内容之后
+  - *id004
+  - *id005
+  - *id006
+  - *id007
+  - *id008
+  - *id001
+  - *id002
