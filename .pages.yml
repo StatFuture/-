@@ -181,6 +181,8 @@ content:
     description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
     options:
       min: 0
+  exclude:
+  - .gitkeep
 - name: members
   label: 团队成员
   type: collection
@@ -226,6 +228,8 @@ content:
     type: string
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: papers
   label: 论文成果
   type: collection
@@ -264,6 +268,8 @@ content:
     type: string
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: projects
   label: 科研项目
   type: collection
@@ -305,6 +311,8 @@ content:
       type: text
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: patents
   label: 专利成果
   type: collection
@@ -337,6 +345,8 @@ content:
     list: true
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: books
   label: 教材著作
   type: collection
@@ -366,6 +376,8 @@ content:
   - *id003
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: awards
   label: 荣誉奖励
   type: collection
@@ -398,6 +410,8 @@ content:
     required: true
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
 - name: resources
   label: 资料图片视频
   type: collection
@@ -464,3 +478,5 @@ content:
   - *id008
   - *id001
   - *id002
+  exclude:
+  - .gitkeep
