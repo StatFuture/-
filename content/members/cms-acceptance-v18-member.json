@@ -1,8 +1,0 @@
-{
-  "name": "【后台验收虚拟成员，非真实人员】",
-  "role": "临时功能测试",
-  "photo": "media/images/cms-acceptance-v18.png",
-  "bio": "验证后台添加成员和照片；测试后删除。",
-  "published": true,
-  "order": 1
-}
