@@ -7,6 +7,12 @@ class BuildTests(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory(prefix="qa-",dir=ROOT);self.root=Path(self.temp.name)/'repo';self.root.mkdir()
   for name in ['assets','media','templates','data','content']:shutil.copytree(ROOT/name,self.root/name)
+  # Tests must not depend on the number of records maintained by real editors.
+  for folder in (self.root/'content').iterdir():
+   for record in folder.glob('*.json'):
+    assert record.resolve().is_relative_to(self.root.resolve())
+    record.unlink()
+  for i in range(12):self.put('papers',f'baseline-{i:02}',dict(title=f'Test paper {i}',citation=f'Test citation {i}',doi='',link='',published=True,order=i))
  def tearDown(self):
   assert Path(self.temp.name).resolve().is_relative_to(ROOT.resolve())
   self.temp.cleanup()
