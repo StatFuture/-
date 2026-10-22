@@ -480,3 +480,401 @@ content:
   - *id002
   exclude:
   - .gitkeep
+- name: v2_settings
+  label: 第二版｜首页与展示设置
+  type: file
+  path: versions/v2/data/settings.json
+  format: json
+  fields:
+  - name: school
+    label: 学校
+    type: string
+  - name: college
+    label: 学院
+    type: string
+  - name: teamName
+    label: 团队名称
+    type: string
+  - name: labIntro
+    label: 实验室简介
+    type: text
+  - name: teacherHomepage
+    label: 教师主页网址
+    type: string
+  - name: admissionNote
+    label: 招生补充说明（经核实后填写）
+    type: text
+  - name: pageSize
+    label: 每页条数
+    type: select
+    options:
+      values:
+      - name: '10'
+        label: 10条
+      - name: '20'
+        label: 20条
+      - name: '50'
+        label: 50条
+  - name: slides
+    label: 首页横图
+    type: object
+    list:
+      collapsible: true
+    fields:
+    - name: id
+      label: 图片标识
+      type: string
+    - name: image
+      label: 横图
+      type: image
+      options:
+        media: images
+    - name: caption
+      label: 说明
+      type: string
+    - name: order
+      label: 排列序号
+      type: number
+    - name: published
+      label: 显示
+      type: boolean
+- name: v2_news
+  label: 第二版｜新闻
+  type: collection
+  path: versions/v2/content/news
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 新闻标题
+    type: string
+    required: true
+  - name: date
+    label: 日期
+    type: date
+    options:
+      format: yyyy-MM-dd
+  - name: summary
+    label: 摘要
+    type: text
+  - name: body
+    label: 正文
+    type: text
+    description: 支持多段文字；配图、视频和附件在下方单独添加。
+  - name: cover
+    label: 列表封面（留空使用第一张配图）
+    type: image
+    options:
+      media: images
+  - name: pinned
+    label: 置顶
+    type: boolean
+  - name: images
+    label: 配图
+    type: image
+    list: true
+    options:
+      media: images
+  - name: attachment
+    label: 资料附件
+    type: file
+    options:
+      media: files
+  - name: video
+    label: 上传短视频
+    type: file
+    options:
+      media: videos
+    description: 试验约定单个不超过20 MB；长视频请填写播放链接。
+  - name: videoUrl
+    label: 视频播放链接
+    type: string
+    description: 可填写 https 视频文件或视频平台页面网址。
+  - name: poster
+    label: 视频封面
+    type: image
+    options:
+      media: images
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 只控制第二版显示，不改变第一版。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  exclude:
+  - .gitkeep
+- name: v2_members
+  label: 第二版｜团队成员
+  type: collection
+  path: versions/v2/content/members
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - name
+    - published
+    - order
+    primary: name
+    sort:
+    - order
+    - name
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: name
+    label: 姓名
+    type: string
+    required: true
+  - name: role
+    label: 职务或身份
+    type: string
+  - name: type
+    label: 成员类别
+    type: select
+    options:
+      values:
+      - name: teacher
+        label: 教师
+      - name: student
+        label: 学生
+  - name: photo
+    label: 成员照片
+    type: image
+    options:
+      media: images
+  - name: bio
+    label: 简介
+    type: text
+  - name: email
+    label: 邮箱
+    type: string
+  - name: link
+    label: 个人主页链接
+    type: string
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 只控制第二版显示，不改变第一版。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  exclude:
+  - .gitkeep
+- name: v2_resources
+  label: 第二版｜图片视频资料
+  type: collection
+  path: versions/v2/content/resources
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 资料标题
+    type: string
+    required: true
+  - name: body
+    label: 说明
+    type: text
+  - name: target
+    label: 放置栏目
+    type: select
+    options:
+      values:
+      - name: resources
+        label: 学术资源列表
+      - name: home
+        label: 首页
+      - name: lab
+        label: 实验室简介
+      - name: news
+        label: 团队新闻
+      - name: team
+        label: 学术团队
+      - name: research
+        label: 科学研究
+      - name: admissions
+        label: 招生信息
+  - name: position
+    label: 栏目中的位置
+    type: select
+    options:
+      values:
+      - name: before
+        label: 内容之前
+      - name: after
+        label: 内容之后
+  - name: images
+    label: 配图
+    type: image
+    list: true
+    options:
+      media: images
+  - name: attachment
+    label: 资料附件
+    type: file
+    options:
+      media: files
+  - name: video
+    label: 上传短视频
+    type: file
+    options:
+      media: videos
+    description: 试验约定单个不超过20 MB；长视频请填写播放链接。
+  - name: videoUrl
+    label: 视频播放链接
+    type: string
+    description: 可填写 https 视频文件或视频平台页面网址。
+  - name: poster
+    label: 视频封面
+    type: image
+    options:
+      media: images
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 只控制第二版显示，不改变第一版。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  exclude:
+  - .gitkeep
+- name: v2_overrides
+  label: 第二版｜成果配图与展示覆盖
+  type: collection
+  path: versions/v2/content/overrides
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 后台备注标题
+    type: string
+    required: true
+  - name: collection
+    label: 成果类型
+    type: select
+    options:
+      values:
+      - name: projects
+        label: 科研项目
+      - name: papers
+        label: 论文
+      - name: patents
+        label: 专利
+      - name: books
+        label: 著作
+      - name: awards
+        label: 荣誉
+  - name: recordId
+    label: 原记录ID
+    type: string
+    required: true
+    description: 填写原文件名去掉.json，例如projects-001；一条成果只能有一条覆盖配置。
+  - name: body
+    label: 第二版补充正文
+    type: text
+  - name: summary
+    label: 第二版摘要
+    type: text
+  - name: hidden
+    label: 在第二版隐藏这条成果
+    type: boolean
+  - name: showOnHome
+    label: 首页展示（仅项目）
+    type: boolean
+    default: true
+  - name: images
+    label: 配图
+    type: image
+    list: true
+    options:
+      media: images
+  - name: attachment
+    label: 资料附件
+    type: file
+    options:
+      media: files
+  - name: video
+    label: 上传短视频
+    type: file
+    options:
+      media: videos
+    description: 试验约定单个不超过20 MB；长视频请填写播放链接。
+  - name: videoUrl
+    label: 视频播放链接
+    type: string
+    description: 可填写 https 视频文件或视频平台页面网址。
+  - name: poster
+    label: 视频封面
+    type: image
+    options:
+      media: images
+  - name: published
+    label: 启用这条覆盖配置
+    type: boolean
+    description: 启用后仅改变第二版的这条成果；原始记录和第一版不受影响。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  exclude:
+  - .gitkeep
