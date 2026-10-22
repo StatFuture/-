@@ -538,6 +538,45 @@ content:
     - name: published
       label: 显示
       type: boolean
+  - name: researchAreas
+    label: 团队研究方向（不填写则显示已收录成员资料）
+    type: object
+    list: true
+    fields:
+    - name: title
+      label: 方向名称
+      type: string
+    - name: description
+      label: 研究介绍
+      type: text
+  - name: admissionsIntro
+    label: 团队招生与培养说明
+    type: text
+  - name: admissionContacts
+    label: 招生联系导师
+    type: object
+    list: true
+    fields:
+    - name: name
+      label: 姓名
+      type: string
+    - name: description
+      label: 方向与培养说明
+      type: text
+    - name: email
+      label: 邮箱
+      type: string
+  - name: autoPlay
+    label: 首页图片自动轮换
+    type: boolean
+    default: true
+  - name: slideIntervalSeconds
+    label: 每张图片停留时间（秒）
+    type: number
+    default: 5
+    options:
+      min: 3
+      max: 15
 - name: v2_news
   label: 第二版｜新闻
   type: collection
