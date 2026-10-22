@@ -1,0 +1,39 @@
+{
+  "cmsUiFormSaved": true,
+  "cmsUiImageUploaded": true,
+  "cmsUiPdfUploaded": true,
+  "cmsUiVideoUploaded": true,
+  "cmsUiExistingPosterSelected": true,
+  "draftExcluded": true,
+  "publishedNewsVisible": true,
+  "memberCreatedAndVisible": true,
+  "imageDecoded": true,
+  "videoPlayed": true,
+  "videoPausedOnNavigation": true,
+  "pdfOpenedAndDownloaded": true,
+  "v18Footer": "版权所有 © 天津商业大学",
+  "date": "2026-10-22",
+  "referenceVersion": "v18",
+  "browser": "Microsoft Edge",
+  "repository": "https://github.com/StatFuture/-",
+  "publicUrl": "https://statfuture.github.io/-/",
+  "cmsUrl": "https://app.pagescms.org/statfuture/-/main/file/profile",
+  "imageUploadBytesTested": 3005230,
+  "videoFormatTested": "WebM",
+  "videoUploadBytesTested": 1121,
+  "pdfUploadBytesTested": 603,
+  "cleanup": {
+    "news": true,
+    "member": true,
+    "images": true,
+    "pdf": true,
+    "video": true,
+    "repositoryHasNoTestFiles": true
+  },
+  "regressionTestsPassed": 6,
+  "profileRepeatedDataSync": true,
+  "limits": [
+    "Large or long videos, multiple simultaneous editors, and slow-network operation have not been fully tested.",
+    "Observed image completion time includes polling delay; it is not an upload duration measurement."
+  ]
+}

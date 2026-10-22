@@ -45,4 +45,15 @@ class BuildTests(unittest.TestCase):
   (self.root/'media/files/test.pdf').write_bytes(b'%PDF-1.4\n%QA only')
   self.put('resources','r',dict(title='POSITION-MARKER',published=True,target='research',position='before',attachment='media/files/test.pdf'))
   doc=self.page();self.assertEqual(doc.select_one('#research > section h3').text,'POSITION-MARKER');self.assertTrue(doc.select_one('#research a[href="media/files/test.pdf"]'))
+ def test_profile_updates_all_repeated_locations(self):
+  file=self.root/'data/profile.json';profile=json.loads(file.read_text(encoding='utf-8-sig'));profile['directions']=['UPDATED-DIRECTION-QA']
+  for row in profile['profile']:
+   if '邮箱' in row['label']:row['value']='qa-update@example.org'
+   if row['label'].strip('：: ')=='姓名':row['value']='QA-NAME'
+  file.write_text(json.dumps(profile,ensure_ascii=False),encoding='utf-8');doc=self.page()
+  for selector in ['#profile .plain-list','#research .plain-list','#admission .plain-list','aside .aside-bottom']:
+   self.assertIn('UPDATED-DIRECTION-QA',doc.select_one(selector).get_text())
+  for selector in ['#profile','aside','#admission']:
+   self.assertTrue(doc.select_one(selector+' a[href="mailto:qa-update@example.org"]'))
+  self.assertIn('QA-NAME',doc.title.get_text());self.assertEqual(doc.footer.get_text(strip=True),'版权所有 © 天津商业大学')
 if __name__=='__main__':unittest.main()

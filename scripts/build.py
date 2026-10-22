@@ -73,7 +73,11 @@ class Builder:
   if v.get('attachment'):html+='<p class="cms-attachment">'+self.link(v['attachment'],'下载资料附件')+'</p>'
   return html
  def paragraphs(self,text):return ''.join('<p class="prose cms-text">'+E(t)+'</p>' for t in str(text or '').split('\n\n') if t.strip())
- def fields(self,rows):return '<dl class="fields">'+''.join('<div><dt>'+E(v['label'])+'</dt><dd>'+E(v['value'])+'</dd></div>' for v in rows)+'</dl>'
+ def fields(self,rows):
+  def display(v):
+   text=E(v['value'])
+   return '<a href="mailto:'+text+'">'+text+'</a>' if '邮箱' in v['label'] and text else text
+  return '<dl class="fields">'+''.join('<div><dt>'+E(v['label'])+'</dt><dd>'+display(v)+'</dd></div>' for v in rows)+'</dl>'
  def item(self,key,v,i):
   text=self.paragraphs
   if key=='papers':
@@ -110,11 +114,16 @@ class Builder:
    for c in list(f.contents):n.append(c)
   body(block('profile','个人资料'),self.fields(profile['profile']));body(block('profile','指导研究生专业'),self.fields(profile['programs']));body(block('overview','个人简介'),self.paragraphs(profile['overview']))
   body(block('research','研究领域'),'<ul class="plain-list">'+''.join('<li>'+E(x)+'</li>' for x in profile['directions'])+'</ul>')
-  body(block('admission','招生专业'),self.fields(profile['programs']));body(block('admission','研究方向'),'<ul class="plain-list">'+''.join('<li>'+E(x)+'</li>' for x in profile['directions'])+'</ul>');body(block('admission','报考信息'),'<ul class="plain-list">'+''.join('<li>'+self.link(a['url'],a['label'])+'</li>' for a in profile['admissions'])+'</ul>')
+  body(block('profile','研究领域'),'<ul class="plain-list">'+''.join('<li>'+E(x)+'</li>' for x in profile['directions'])+'</ul>')
+  email=next((r['value'] for r in profile['profile'] if r['label'].strip('：: ')=='电子邮箱'),'')
+  admission_rows=list(profile['programs'])
+  if email and not any('邮箱' in r['label'] for r in admission_rows):admission_rows.append({'label':'联系邮箱：','value':email})
+  body(block('admission','招生专业'),self.fields(admission_rows));body(block('admission','研究方向'),'<ul class="plain-list">'+''.join('<li>'+E(x)+'</li>' for x in profile['directions'])+'</ul>');body(block('admission','报考信息'),'<ul class="plain-list">'+''.join('<li>'+self.link(a['url'],a['label'])+'</li>' for a in profile['admissions'])+'</ul>')
   name=next((r['value'] for r in profile['profile'] if r['label'].strip('：: ')=='姓名'),'郝志强')
+  if doc.title:doc.title.string=name+' · 教师个人主页'
   identity=doc.select_one('aside .identity');intro='<h1>'+E(name)+'</h1>'
   for label,short in [('专业技术职称','职称'),('工作单位','单位'),('学历','学历'),('电子邮箱','电子邮箱')]:
-   value=next((r['value'] for r in profile['profile'] if r['label'].strip('：: ')==label),'');intro+='<p>'+short+'：'+E(value)+'</p>'
+   value=next((r['value'] for r in profile['profile'] if r['label'].strip('：: ')==label),'');intro+='<p>'+short+'：'+('<a href="mailto:'+E(value)+'">'+E(value)+'</a>' if label=='电子邮箱' and value else E(value))+'</p>'
   sethtml(identity,intro);sethtml(doc.select_one('aside .aside-bottom'),'<p>研究领域</p><p>'+'<br>'.join(E(x) for x in profile['directions'])+'</p>')
   portrait=doc.select_one('aside .portrait');sethtml(portrait,self.image(profile.get('portrait'),name));portrait['aria-hidden']='false' if profile.get('portrait') else 'true'
   sethtml(doc.select_one('#projects'),self.paged('projects',records(self.root,'projects')))
