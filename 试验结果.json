@@ -30,10 +30,20 @@
     "video": true,
     "repositoryHasNoTestFiles": true
   },
-  "regressionTestsPassed": 6,
+  "regressionTestsPassed": 7,
   "profileRepeatedDataSync": true,
   "limits": [
     "Large or long videos, multiple simultaneous editors, and slow-network operation have not been fully tested.",
     "Observed image completion time includes polling delay; it is not an upload duration measurement."
+  ],
+  "publicNavigationRestoredToV18": true,
+  "publicNavigationCount": 7,
+  "backupBranch": "backup/expanded-columns-2026-10-22",
+  "originalStructureChecks": [
+    "Navigation labels and order",
+    "Tab and panel IDs",
+    "All section headings",
+    "Footer",
+    "No horizontal overflow at 1440,1000,901,900,390 widths"
   ]
 }

@@ -98,7 +98,7 @@ content:
       - name: '50'
         label: 50条
 - name: news
-  label: 新闻动态
+  label: 新闻资料（备用）
   type: collection
   path: content/news
   format: json
@@ -173,7 +173,7 @@ content:
     name: published
     label: 在网站显示
     type: boolean
-    description: 勾选后，保存将触发部署；部署完成后访客可见。未勾选的记录不会进入公开页面。
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
   - &id002
     name: order
     label: 排列序号
@@ -447,7 +447,7 @@ content:
     options:
       values:
       - name: resources
-        label: 资料与视频
+        label: 仅保存备用（第一版不显示）
       - name: profile
         label: 个人资料
       - name: overview

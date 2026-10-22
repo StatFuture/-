@@ -128,10 +128,10 @@ class Builder:
   portrait=doc.select_one('aside .portrait');sethtml(portrait,self.image(profile.get('portrait'),name));portrait['aria-hidden']='false' if profile.get('portrait') else 'true'
   sethtml(doc.select_one('#projects'),self.paged('projects',records(self.root,'projects')))
   for key,title in [('papers','论文成果'),('patents','专利成果'),('books','出版教材'),('awards','获奖情况')]:body(block('results',title),self.paged(key,records(self.root,key),'ol' if key=='papers' else 'div'))
-  body(doc.select_one('#team .block'),self.paragraphs(profile.get('team'))+self.paged('members',records(self.root,'members')))
-  for key,title in [('news','新闻动态'),('resources','资料与视频')]:
-   tab=doc.new_tag('button',id='tab-'+key);tab['role']='tab';tab['aria-controls']=key;tab['aria-selected']='false';tab['tabindex']='-1';tab.string=title;doc.select_one('#tabs').append(tab)
-   article=doc.new_tag('article',id=key);article['role']='tabpanel';article['aria-labelledby']='tab-'+key;article['hidden']='';article['tabindex']='0';article.append(BeautifulSoup('<section class="block"><h2>'+title+'</h2>'+self.paged(key,records(self.root,key) if key=='news' else [v for v in records(self.root,key) if v.get('target','resources')=='resources'])+'</section>','html.parser'));doc.select_one('#team').parent.append(article)
+  members=records(self.root,'members')
+  body(doc.select_one('#team .block'),self.paragraphs(profile.get('team'))+(self.paged('members',members) if members else ''))
+  # First version follows the user's v18 navigation exactly.
+  # News and standalone resources stay in CMS storage; they add no public tabs.
   for resource in records(self.root,'resources'):
    target=resource.get('target','resources')
    if target=='resources':continue
