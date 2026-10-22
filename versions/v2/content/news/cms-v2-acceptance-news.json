@@ -1,0 +1,15 @@
+{
+  "title": "第二版功能验收（临时测试，稍后删除）",
+  "date": "2026-10-22",
+  "summary": "测试配图、PDF和视频，正式交付前删除。",
+  "body": "这是后台真实填写的隔离验收记录。\n换行和文本显示检查。",
+  "cover": "media/images/cms-v2-acceptance.png",
+  "pinned": true,
+  "images": [
+    "media/images/cms-v2-acceptance.png"
+  ],
+  "attachment": "media/files/cms-v2-acceptance.pdf",
+  "video": "media/videos/cms-v2-acceptance.webm",
+  "published": true,
+  "order": 1
+}
