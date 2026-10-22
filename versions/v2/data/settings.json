@@ -38,5 +38,6 @@
   "researchAreas": [],
   "admissionsIntro": "",
   "admissionContacts": [],
-  "slideIntervalSeconds": 3
+  "slideIntervalSeconds": 3,
+  "teacherHomepage": ""
 }
