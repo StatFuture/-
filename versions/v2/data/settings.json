@@ -2,13 +2,5 @@
   "school": "天津商业大学",
   "college": "理学院",
   "pageSize": "10",
-  "slides": [
-    {
-      "id": "cms-v2-slide",
-      "image": "media/images/cms-v2-acceptance.png",
-      "caption": "临时验收横图（稍后移除）",
-      "order": 1,
-      "published": true
-    }
-  ]
+  "slides": []
 }

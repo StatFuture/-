@@ -1,6 +1,6 @@
 """Build version two without changing the version-one output or its source data."""
 from pathlib import Path
-import copy, json, math, shutil
+import copy, hashlib, json, math, shutil
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 from build import Builder, read, ROOT
@@ -140,6 +140,15 @@ def build_v2(root=ROOT, dest=None):
             media(record)
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
     (dest / 'assets/data.js').write_text('window.SITE_DATA = ' + payload + ';\n', encoding='utf-8')
+    # A newly published HTML page must not reuse a previous release's cached data/runtime.
+    document = BeautifulSoup((dest / 'index.html').read_text(encoding='utf-8'), 'html.parser')
+    for node in document.select('script[src], link[rel=stylesheet][href]'):
+        attr = 'src' if node.name == 'script' else 'href'
+        name = node[attr]
+        if name in ('assets/data.js', 'assets/site.js', 'assets/site.css'):
+            digest = hashlib.sha256((dest / name).read_bytes()).hexdigest()[:16]
+            node[attr] = name + '?v=' + digest
+    (dest / 'index.html').write_text(str(document), encoding='utf-8')
     return {'published': {k: len(v) for k, v in data['collections'].items()},
             'dataBytes': len(payload.encode('utf-8')), 'path': 'v2/'}
 

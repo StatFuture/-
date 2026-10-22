@@ -89,5 +89,14 @@ class VersionTwoTests(unittest.TestCase):
         path=self.v2/'data/settings.json';data=json.loads(path.read_text(encoding='utf-8'))
         data['pageSize']=0;self.write('versions/v2/data/settings.json',data)
         with self.assertRaises(ValueError): self.data()
+    def test_release_data_has_a_new_cache_key_after_edits(self):
+        self.data()
+        from bs4 import BeautifulSoup
+        page = self.root/'_site/v2/index.html'
+        before = BeautifulSoup(page.read_text(encoding='utf-8'),'html.parser').select_one('script[src*=data]')['src']
+        self.write('versions/v2/content/news/new.json',{'title':'New release','published':True})
+        self.data()
+        after = BeautifulSoup(page.read_text(encoding='utf-8'),'html.parser').select_one('script[src*=data]')['src']
+        self.assertNotEqual(before, after)
 
 if __name__ == '__main__': unittest.main()
