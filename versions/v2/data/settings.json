@@ -1,14 +1,14 @@
 {
   "school": "天津商业大学",
   "college": "理学院",
-  "teamName": "",
-  "labIntro": "",
-  "teacherHomepage": "",
-  "slides": [],
   "pageSize": "10",
-  "verifiedAt": "2026-10-22",
-  "sources": {
-    "faculty": "https://lxy.tjcu.edu.cn/info/1103/1263.htm",
-    "graduate": "https://gs.tjcu.edu.cn/info/1253/4183.htm"
-  }
+  "slides": [
+    {
+      "id": "cms-v2-slide",
+      "image": "media/images/cms-v2-acceptance.png",
+      "caption": "临时验收横图（稍后移除）",
+      "order": 1,
+      "published": true
+    }
+  ]
 }
