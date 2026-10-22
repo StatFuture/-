@@ -538,6 +538,29 @@ content:
     - name: published
       label: 显示
       type: boolean
+    - name: imageFit
+      label: 照片显示方式
+      type: select
+      options:
+        values:
+        - name: contain
+          label: 完整显示（适合团队合照）
+        - name: cover
+          label: 铺满横幅（可能裁切）
+    - name: focusX
+      label: 横向显示位置（0左，50中，100右）
+      type: number
+      default: 50
+      options:
+        min: 0
+        max: 100
+    - name: focusY
+      label: 纵向显示位置（0上，50中，100下）
+      type: number
+      default: 50
+      options:
+        min: 0
+        max: 100
   - name: researchAreas
     label: 团队研究方向（不填写则显示已收录成员资料）
     type: object
@@ -573,7 +596,7 @@ content:
   - name: slideIntervalSeconds
     label: 每张图片停留时间（秒）
     type: number
-    default: 5
+    default: 3
     options:
       min: 3
       max: 15
