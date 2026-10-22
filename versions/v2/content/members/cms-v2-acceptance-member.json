@@ -1,0 +1,8 @@
+{
+  "name": "临时验收成员（稍后删除）",
+  "role": "学生",
+  "type": "student",
+  "bio": "测试没有照片时姓名和简介仍正常显示。",
+  "published": true,
+  "order": 1
+}
