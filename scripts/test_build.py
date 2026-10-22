@@ -7,6 +7,7 @@ class BuildTests(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory(prefix="qa-",dir=ROOT);self.root=Path(self.temp.name)/'repo';self.root.mkdir()
   for name in ['assets','media','templates','data','content']:shutil.copytree(ROOT/name,self.root/name)
+  profile_path=self.root/'data/profile.json';profile=json.loads(profile_path.read_text(encoding='utf-8'));profile['pageSize']=10;profile_path.write_text(json.dumps(profile,ensure_ascii=False),encoding='utf-8')
   # Tests must not depend on the number of records maintained by real editors.
   for folder in (self.root/'content').iterdir():
    for record in folder.glob('*.json'):

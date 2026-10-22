@@ -7,8 +7,16 @@ class VersionTwoTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='hao-v2-test-', dir=ROOT.parent)
         self.root = Path(self.temp.name) / 'project'
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns('_site', '__pycache__'))
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns('_site', '__pycache__', '.git'))
         self.v2 = self.root / 'versions/v2'
+        # Tests operate on controlled fixtures, never assume the editor's lists are empty.
+        for folder in [self.root / 'content', self.v2 / 'content']:
+            for record in folder.rglob('*.json'):
+                assert record.resolve().is_relative_to(self.root.resolve())
+                record.unlink()
+        self.write('content/projects/projects-001.json',
+                   {'title':'Baseline project','fields':[],'order':1,'published':True})
+        self.write('versions/v2/data/settings.json', {'pageSize':'10','slides':[]})
     def tearDown(self):
         self.temp.cleanup()
     def write(self, path, obj):
