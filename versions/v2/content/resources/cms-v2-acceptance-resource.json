@@ -1,0 +1,8 @@
+{
+  "title": "临时验收资料位置（稍后删除）",
+  "body": "检查资料可以放在首页内容之前。",
+  "target": "home",
+  "position": "before",
+  "published": true,
+  "order": 1
+}
