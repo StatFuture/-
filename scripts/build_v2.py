@@ -36,7 +36,7 @@ def build_v2(root=ROOT, dest=None):
     if dest.exists():
         shutil.rmtree(dest)
     (dest / 'assets').mkdir(parents=True)
-    for name in ('site.css', 'site.js', 'school-logo.png'):
+    for name in ('site.css', 'site.js', 'school-logo.png', 'avatar-default.png'):
         shutil.copy2(source / 'assets' / name, dest / 'assets' / name)
     shutil.copy2(source / 'index.html', dest / 'index.html')
     data = {'profile': read(root / 'data/profile.json'),

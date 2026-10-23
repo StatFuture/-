@@ -729,13 +729,20 @@ content:
       - name: student
         label: 学生
   - name: photo
-    label: 成员照片
+    label: 成员照片（不上传时使用默认头像）
     type: image
     options:
       media: images
   - name: bio
     label: 简介
     type: text
+  - name: body
+    label: 详细个人介绍
+    type: text
+  - name: demo
+    label: 试验用示例成员
+    type: boolean
+    description: 打开后网站会标注示例成员；正式资料请关闭。
   - name: email
     label: 邮箱
     type: string
