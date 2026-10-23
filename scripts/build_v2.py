@@ -90,6 +90,16 @@ def build_v2(root=ROOT, dest=None):
         data['collections'][kind] = result
     if set(overrides) - used:
         raise ValueError('Override points to a missing or unpublished shared record: ' + str(set(overrides) - used))
+    # Team records have their own editable source; shared records are opt-in.
+    for kind in SHARED:
+        if settings.get('showSharedResearch') is False:
+            data['collections'][kind] = []
+        team_records = load_records(source / 'content' / kind)
+        for value in team_records:
+            value['id'] = 'team-' + value['id']
+        data['collections'][kind].extend(team_records)
+        data['collections'][kind].sort(key=lambda v: str(v.get('date', '')), reverse=True)
+        data['collections'][kind].sort(key=lambda v: v.get('order', 9999))
     settings.pop('recordOverrides', None)
     assets = Builder(root, dest)
     def asset(value, image=False):
@@ -125,9 +135,6 @@ def build_v2(root=ROOT, dest=None):
                 record[key] = asset(record[key])
     if settings.get('showPersonalProfile') is False:
         data['profile'] = {}
-    if settings.get('showSharedResearch') is False:
-        for kind in SHARED:
-            data['collections'][kind] = []
     media(data['profile'])
     for admission in data['profile'].get('admissions', []):
         admission['url'] = asset(admission.get('url'))

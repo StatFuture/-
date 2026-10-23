@@ -99,4 +99,24 @@ class VersionTwoTests(unittest.TestCase):
         after = BeautifulSoup(page.read_text(encoding='utf-8'),'html.parser').select_one('script[src*=data]')['src']
         self.assertNotEqual(before, after)
 
+    def test_independent_team_research_works_with_shared_records_disabled(self):
+        self.write('versions/v2/data/settings.json', {'pageSize':10, 'slides':[],
+                   'showSharedResearch':False, 'showPersonalProfile':False})
+        shared_before = (self.root/'content/projects/projects-001.json').read_bytes()
+        self.write('versions/v2/content/projects/team-example.json',
+                   {'title':'Team project','published':True,'researchArea':'Optics','contributors':'Member A'})
+        self.write('versions/v2/content/projects/draft.json', {'title':'PRIVATE','published':False})
+        data = self.data()
+        self.assertEqual([x['title'] for x in data['collections']['projects']], ['Team project'])
+        self.assertEqual(data['collections']['projects'][0]['id'], 'team-team-example')
+        self.assertNotIn('overview', data['profile'])
+        self.assertEqual((self.root/'content/projects/projects-001.json').read_bytes(), shared_before)
+
+    def test_team_and_shared_slugs_do_not_collide(self):
+        self.write('versions/v2/content/projects/projects-001.json',
+                   {'title':'Independent','published':True})
+        records = self.data()['collections']['projects']
+        self.assertEqual(len(records),2)
+        self.assertEqual(len({x['id'] for x in records}),2)
+
 if __name__ == '__main__': unittest.main()

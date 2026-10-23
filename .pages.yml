@@ -508,6 +508,26 @@ content:
   - name: labIntro
     label: 实验室简介
     type: text
+  - name: contactAddress
+    label: 团队联系地址
+    type: string
+  - name: contactPhone
+    label: 团队联系电话
+    type: string
+  - name: contactEmail
+    label: 团队联系邮箱
+    type: string
+  - name: admissionLinks
+    label: 学校招生链接
+    type: object
+    list: true
+    fields:
+    - name: label
+      label: 链接名称
+      type: string
+    - name: url
+      label: 网址
+      type: string
   - name: teacherHomepage
     label: 教师主页网址
     type: string
@@ -572,7 +592,7 @@ content:
         min: 0
         max: 100
   - name: researchAreas
-    label: 团队研究方向（不填写则显示已收录成员资料）
+    label: 团队研究方向（未填写时留空）
     type: object
     list: true
     fields:
@@ -960,5 +980,272 @@ content:
     description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
     options:
       min: 0
+  exclude:
+  - .gitkeep
+
+- name: v2_projects
+  label: 第二版｜团队项目
+  type: collection
+  path: versions/v2/content/projects
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 项目名称
+    type: string
+    required: true
+  - name: fields
+    label: 详细信息
+    type: object
+    list:
+      collapsible: true
+    fields:
+    - name: label
+      label: 字段名称
+      type: string
+    - name: value
+      label: 字段内容
+      type: text
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  - name: researchArea
+    label: 所属团队研究方向（与设置中的方向名称一致）
+    type: string
+  - name: contributors
+    label: 参与成员或负责人
+    type: string
+  exclude:
+  - .gitkeep
+
+- name: v2_papers
+  label: 第二版｜团队论文
+  type: collection
+  path: versions/v2/content/papers
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 列表标题
+    type: string
+    required: true
+  - name: citation
+    label: 完整引文
+    type: text
+    required: true
+  - name: doi
+    label: DOI
+    type: string
+  - name: link
+    label: 论文网址
+    type: string
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  - name: researchArea
+    label: 所属团队研究方向（与设置中的方向名称一致）
+    type: string
+  - name: contributors
+    label: 参与成员或负责人
+    type: string
+  exclude:
+  - .gitkeep
+
+- name: v2_patents
+  label: 第二版｜团队专利
+  type: collection
+  path: versions/v2/content/patents
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 专利名称
+    type: string
+    required: true
+  - name: lines
+    label: 详情
+    type: text
+    list: true
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  - name: researchArea
+    label: 所属团队研究方向（与设置中的方向名称一致）
+    type: string
+  - name: contributors
+    label: 参与成员或负责人
+    type: string
+  exclude:
+  - .gitkeep
+
+- name: v2_books
+  label: 第二版｜团队著作
+  type: collection
+  path: versions/v2/content/books
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 教材名称
+    type: string
+    required: true
+  - name: fields
+    label: 详细信息
+    type: object
+    list:
+      collapsible: true
+    fields:
+    - name: label
+      label: 字段名称
+      type: string
+    - name: value
+      label: 字段内容
+      type: text
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  - name: researchArea
+    label: 所属团队研究方向（与设置中的方向名称一致）
+    type: string
+  - name: contributors
+    label: 参与成员或负责人
+    type: string
+  exclude:
+  - .gitkeep
+
+- name: v2_awards
+  label: 第二版｜团队荣誉
+  type: collection
+  path: versions/v2/content/awards
+  format: json
+  filename:
+    template: '{year}{month}{day}{hour}{minute}{second}-{primary}.json'
+    field: create
+  subfolders: false
+  view:
+    fields:
+    - title
+    - published
+    - order
+    primary: title
+    sort:
+    - order
+    - title
+    default:
+      sort: order
+      order: asc
+  fields:
+  - name: title
+    label: 列表标题
+    type: string
+    required: true
+  - name: text
+    label: 荣誉内容
+    type: text
+    required: true
+  - name: published
+    label: 在网站显示
+    type: boolean
+    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+  - name: order
+    label: 排列序号
+    type: number
+    description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
+    options:
+      min: 0
+  - name: researchArea
+    label: 所属团队研究方向（与设置中的方向名称一致）
+    type: string
+  - name: contributors
+    label: 参与成员或负责人
+    type: string
   exclude:
   - .gitkeep
