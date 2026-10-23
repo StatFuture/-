@@ -155,6 +155,9 @@ class Builder:
   data=doc.new_tag('script',id='cms-page-data',type='application/json');data.string=json.dumps({'pageSize':PAGE,'groups':self.payload},ensure_ascii=False,separators=(',',':')).replace('<','\\u003c');doc.body.append(data)
   for src in ['assets/navigation.js','assets/pagination.js']:
    script=doc.new_tag('script',src=src);script['defer']='';doc.head.append(script)
+  for node in doc.select('script[src], link[href]'):
+   attr='src' if node.name=='script' else 'href';asset=node.get(attr,'')
+   if asset in ['assets/navigation.js','assets/pagination.js','assets/cms.css']:node[attr]=asset+'?v='+hashlib.sha256((self.dest/asset).read_bytes()).hexdigest()[:16]
   (self.dest/'index.html').write_text(str(doc),encoding='utf-8');(self.dest/'.nojekyll').write_text('')
   summary={'published':{k:len(v) for k,v in self.payload.items()},'indexBytes':(self.dest/'index.html').stat().st_size,'imageBytes':sum(p.stat().st_size for p in (self.dest/'assets').glob('image-*'))}
   (self.dest/'build-info.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8');return summary

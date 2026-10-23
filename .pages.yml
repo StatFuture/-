@@ -87,7 +87,7 @@ content:
       label: 网址
       type: string
   - name: pageSize
-    label: 每页条数
+    label: 第一版每页容量上限
     type: select
     options:
       values:
@@ -97,6 +97,7 @@ content:
         label: 20条
       - name: '50'
         label: 50条
+    description: 页面结合屏幕大小与论文长度自动计算容量，并将记录均衡分配；这是上限，不是固定条数。
 - name: news
   label: 新闻资料（备用）
   type: collection
@@ -600,6 +601,11 @@ content:
     options:
       min: 3
       max: 15
+  - name: previewPlaceholders
+    label: 显示待补充的教师与新闻样本位置
+    type: boolean
+    description: 仅用于查看排版；不是实际成员或新闻。有真实新闻后自动显示真实内容。
+    default: false
 - name: v2_news
   label: 第二版｜新闻
   type: collection

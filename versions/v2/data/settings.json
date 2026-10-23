@@ -39,5 +39,6 @@
   "admissionsIntro": "",
   "admissionContacts": [],
   "slideIntervalSeconds": 3,
-  "teacherHomepage": ""
+  "teacherHomepage": "",
+  "previewPlaceholders": true
 }
