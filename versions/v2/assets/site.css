@@ -37,3 +37,7 @@ body{font-size:15px;line-height:1.85}.masthead{min-height:112px}.logo{width:300p
 @media(max-width:600px){.hero:not(:has(img)){height:180px}.home-section{padding-top:30px;padding-bottom:32px}.empty{min-height:88px;padding:24px 18px}.more{font-size:13px;min-width:60px}.home-section .section-heading:before{right:80px}.tabs a{padding:9px 12px;font-size:14px}.collection-heading h2{font-size:21px}.page-content{padding-bottom:40px}}
 
 .direction-detail{max-width:980px;margin:auto}.direction-detail>section{margin-top:36px}.direction-detail>section>h2{font-size:23px;margin-bottom:22px}.direction-output{margin-top:26px}.direction-output h3{font-size:18px}.direction-detail>.back{display:inline-block;margin-top:32px}.direction-detail .member-text{max-width:850px}.direction-detail .pager{margin-top:22px}
+
+/* Same approved Twin Lakes watercolor as version one; team carousel stays separate. */
+.masthead-band{position:relative;isolation:isolate;background:#fff}.masthead-band:before{content:"";position:absolute;inset:0 0 0 auto;width:72%;background:url(campus-header.webp) center 43%/cover no-repeat;opacity:.72;mask-image:linear-gradient(90deg,transparent,#000 26%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 26%);z-index:-1;pointer-events:none}.masthead{position:relative}.masthead .school-link{padding:3px 8px;background:rgba(255,255,255,.84)}
+@media(max-width:600px){.masthead-band:before{width:100%;opacity:.48;mask-image:linear-gradient(90deg,transparent 32%,#000 85%);-webkit-mask-image:linear-gradient(90deg,transparent 32%,#000 85%)}}

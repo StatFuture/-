@@ -38,6 +38,8 @@ def build_v2(root=ROOT, dest=None):
     (dest / 'assets').mkdir(parents=True)
     for name in ('site.css', 'site.js', 'school-logo.png', 'avatar-default.png'):
         shutil.copy2(source / 'assets' / name, dest / 'assets' / name)
+    # Reuse the approved first-version watercolor asset, without changing version one.
+    shutil.copy2(root / 'assets/image-08af15a9b38d928b.webp', dest / 'assets/campus-header.webp')
     shutil.copy2(source / 'index.html', dest / 'index.html')
     data = {'profile': read(root / 'data/profile.json'),
             'settings': read(source / 'data/settings.json'), 'collections': {}}
