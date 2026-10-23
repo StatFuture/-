@@ -602,6 +602,12 @@ content:
     - name: description
       label: 研究介绍
       type: text
+    - name: body
+      label: 详细研究介绍
+      type: text
+    - name: participants
+      label: 参与成员
+      type: text
   - name: admissionsIntro
     label: 团队招生与培养说明
     type: text
@@ -1024,7 +1030,7 @@ content:
   - name: published
     label: 在网站显示
     type: boolean
-    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+    description: 只控制第二版团队资料的发布，不改变第一版。
   - name: order
     label: 排列序号
     type: number
@@ -1079,7 +1085,7 @@ content:
   - name: published
     label: 在网站显示
     type: boolean
-    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+    description: 只控制第二版团队资料的发布，不改变第一版。
   - name: order
     label: 排列序号
     type: number
@@ -1092,6 +1098,10 @@ content:
   - name: contributors
     label: 参与成员或负责人
     type: string
+  - name: representative
+    label: 作为所属研究方向的代表成果
+    type: boolean
+    default: false
   exclude:
   - .gitkeep
 
@@ -1128,7 +1138,7 @@ content:
   - name: published
     label: 在网站显示
     type: boolean
-    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+    description: 只控制第二版团队资料的发布，不改变第一版。
   - name: order
     label: 排列序号
     type: number
@@ -1141,6 +1151,10 @@ content:
   - name: contributors
     label: 参与成员或负责人
     type: string
+  - name: representative
+    label: 作为所属研究方向的代表成果
+    type: boolean
+    default: false
   exclude:
   - .gitkeep
 
@@ -1185,7 +1199,7 @@ content:
   - name: published
     label: 在网站显示
     type: boolean
-    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+    description: 只控制第二版团队资料的发布，不改变第一版。
   - name: order
     label: 排列序号
     type: number
@@ -1198,6 +1212,10 @@ content:
   - name: contributors
     label: 参与成员或负责人
     type: string
+  - name: representative
+    label: 作为所属研究方向的代表成果
+    type: boolean
+    default: false
   exclude:
   - .gitkeep
 
@@ -1234,7 +1252,7 @@ content:
   - name: published
     label: 在网站显示
     type: boolean
-    description: 第一版不增加新栏目。新闻与独立资料仅保存备用；资料只有选择原版已有栏目时才在那里显示。
+    description: 只控制第二版团队资料的发布，不改变第一版。
   - name: order
     label: 排列序号
     type: number
