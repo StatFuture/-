@@ -2,43 +2,14 @@
   "school": "天津商业大学",
   "college": "理学院",
   "pageSize": "10",
-  "slides": [
-    {
-      "id": "campus-trial-1",
-      "image": "media/images/v2-carousel-trial-1.webp",
-      "caption": "轮播试验 1/3 · 校园风景临时占位，非团队照片",
-      "published": true,
-      "order": 1,
-      "imageFit": "cover",
-      "focusX": 50,
-      "focusY": 50
-    },
-    {
-      "id": "campus-trial-2",
-      "image": "media/images/v2-carousel-trial-2.webp",
-      "caption": "轮播试验 2/3 · 校园风景临时占位，非团队照片",
-      "published": true,
-      "order": 2,
-      "imageFit": "cover",
-      "focusX": 50,
-      "focusY": 50
-    },
-    {
-      "id": "campus-trial-3",
-      "image": "media/images/v2-carousel-trial-3.webp",
-      "caption": "轮播试验 3/3 · 校园风景临时占位，非团队照片",
-      "published": true,
-      "order": 3,
-      "imageFit": "cover",
-      "focusX": 50,
-      "focusY": 50
-    }
-  ],
+  "slides": [],
   "autoPlay": true,
   "researchAreas": [],
   "admissionsIntro": "",
   "admissionContacts": [],
   "slideIntervalSeconds": 3,
   "teacherHomepage": "",
-  "previewPlaceholders": true
+  "previewPlaceholders": false,
+  "showPersonalProfile": false,
+  "showSharedResearch": false
 }

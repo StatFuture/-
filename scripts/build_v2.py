@@ -123,6 +123,11 @@ def build_v2(root=ROOT, dest=None):
         for key in ('video', 'videoUrl', 'attachment', 'link', 'source', 'homepage'):
             if record.get(key):
                 record[key] = asset(record[key])
+    if settings.get('showPersonalProfile') is False:
+        data['profile'] = {}
+    if settings.get('showSharedResearch') is False:
+        for kind in SHARED:
+            data['collections'][kind] = []
     media(data['profile'])
     for admission in data['profile'].get('admissions', []):
         admission['url'] = asset(admission.get('url'))

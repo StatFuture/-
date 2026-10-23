@@ -487,6 +487,15 @@ content:
   path: versions/v2/data/settings.json
   format: json
   fields:
+  - name: showPersonalProfile
+    label: 将第一版个人资料展示为团队成员
+    type: boolean
+    description: 当前关闭，团队成员请在第二版团队成员栏目独立填写。
+  - name: showSharedResearch
+    label: 展示第一版共用成果
+    type: boolean
+    description: 当前关闭，待核对成果与团队的归属后再开启。
+
   - name: school
     label: 学校
     type: string
