@@ -2,7 +2,41 @@
   "school": "天津商业大学",
   "college": "理学院",
   "pageSize": "10",
-  "slides": [],
+  "slides": [
+    {
+      "id": "campus-demo-1",
+      "image": "media/images/v2-carousel-trial-1.webp",
+      "caption": "轮播演示：校园湖景，非团队合照",
+      "published": true,
+      "order": 10,
+      "imageFit": "cover",
+      "focusX": 50,
+      "focusY": 30,
+      "layoutDemo": true
+    },
+    {
+      "id": "campus-demo-2",
+      "image": "media/images/v2-carousel-trial-2.webp",
+      "caption": "轮播演示：校园亭景，非团队合照",
+      "published": true,
+      "order": 20,
+      "imageFit": "cover",
+      "focusX": 50,
+      "focusY": 30,
+      "layoutDemo": true
+    },
+    {
+      "id": "campus-demo-3",
+      "image": "media/images/v2-carousel-trial-3.webp",
+      "caption": "轮播演示：校园全景，非团队合照",
+      "published": true,
+      "order": 30,
+      "imageFit": "cover",
+      "focusX": 50,
+      "focusY": 50,
+      "layoutDemo": true
+    }
+  ],
   "autoPlay": true,
   "researchAreas": [],
   "admissionsIntro": "",

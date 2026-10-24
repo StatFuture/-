@@ -596,6 +596,11 @@ content:
       options:
         min: 0
         max: 100
+    - name: layoutDemo
+      label: 排版演示图片
+      type: boolean
+      default: false
+      description: 开启时随多数据演示开关显示；换成正式团队照片后关闭此项。
   - name: researchAreas
     label: 团队研究方向（未填写时留空）
     type: object

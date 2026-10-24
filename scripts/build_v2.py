@@ -152,6 +152,8 @@ def build_v2(root=ROOT, dest=None):
         settings['teacherHomepage'] = asset(settings['teacherHomepage'])
     slides = []
     for slide in settings.get('slides', []):
+        if slide.get('layoutDemo') and settings.get('demoMode') is not True:
+            continue
         if slide.get('published') is True and slide.get('image'):
             slide = copy.deepcopy(slide)
             slide['image'] = asset(slide['image'], True)

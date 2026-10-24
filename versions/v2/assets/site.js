@@ -1,7 +1,7 @@
 (()=>{'use strict';
 if(!window.SITE_DATA?.profile||!window.SITE_DATA?.settings||!window.SITE_DATA?.collections){document.querySelector('main').textContent='页面资料未能加载，请刷新页面，或确认网页与assets文件夹已完整上传。';return;}
 const D=window.SITE_DATA,S=D.settings,P=D.profile,C=D.collections,main=document.querySelector('main');
-const demoNotice=document.querySelector('[data-demo-notice]');if(demoNotice){demoNotice.hidden=S.demoMode!==true;demoNotice.textContent='当前为多数据排版演示，成员、新闻、项目和成果均为测试内容，非真实团队资料。';}
+const demoNotice=document.querySelector('[data-demo-notice]');if(demoNotice){demoNotice.hidden=S.demoMode!==true;demoNotice.textContent='当前为多数据排版演示，成员、新闻、项目和成果均为测试内容；轮播暂用校园图片，非团队合照。';}
 const fact=label=>(P.profile||[]).find(x=>String(x.label).replace(/[：: ]/g,'')===label)?.value||'';
 const teacherName=fact('姓名')||'郝志强',teacherRole=fact('专业技术职称'),teacherEducation=fact('学历'),teacherEmail=fact('电子邮箱');
 const pageSize=[10,20,50].includes(Number(S.pageSize))?Number(S.pageSize):10;
@@ -19,9 +19,13 @@ const live=a=>(a||[]).filter(x=>x.published!==false).sort((a,b)=>(Number(a.order
 const get=kind=>C[kind]||[];
 let slide=0,carouselTimer=null,resumeWithFocus=false;
 let autoplayPaused=S.autoPlay===false||window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function syncCarousel(){clearInterval(carouselTimer);carouselTimer=null;const hero=main.querySelector('.hero');if(!hero||live(S.slides).length<2||autoplayPaused||document.hidden||(window.matchMedia('(hover: hover)').matches&&hero.matches(':hover'))||(hero.contains(document.activeElement)&&!resumeWithFocus))return;const ms=Math.max(3000,Math.min(15000,Number(S.slideIntervalSeconds)*1000||Number(S.slideInterval)||3000));carouselTimer=setInterval(()=>changeSlide('next'),ms);}
+function syncCarousel(){clearInterval(carouselTimer);carouselTimer=null;const hero=main.querySelector('.hero');if(!hero||live(S.slides).length<2||autoplayPaused||document.hidden||(window.matchMedia('(hover: hover)').matches&&hero.matches(':hover')&&!resumeWithFocus)||(hero.contains(document.activeElement)&&!resumeWithFocus))return;const ms=Math.max(3000,Math.min(15000,Number(S.slideIntervalSeconds)*1000||Number(S.slideInterval)||3000));carouselTimer=setInterval(()=>changeSlide('next'),ms);}
 document.addEventListener('visibilitychange',syncCarousel);
-for(const event of ['pointerover','pointerout','focusin','focusout'])main.addEventListener(event,()=>setTimeout(syncCarousel,0));
+let wasCarouselHovered=false;
+function updateCarouselHover(){const hero=main.querySelector('.hero'),hovered=!!hero&&window.matchMedia('(hover: hover)').matches&&hero.matches(':hover');if(hovered!==wasCarouselHovered){wasCarouselHovered=hovered;if(hovered)resumeWithFocus=false;syncCarousel();}}
+// Track hover transitions outside main too: changing a control icon can detach the old pointer target.
+for(const event of ['pointerover','pointerout','pointermove'])document.addEventListener(event,()=>setTimeout(updateCarouselHover,0),{passive:true});
+for(const event of ['focusin','focusout'])main.addEventListener(event,()=>setTimeout(syncCarousel,0));
 
 document.querySelectorAll('[data-school]').forEach(el=>el.textContent=S.school||'天津商业大学');
 document.querySelectorAll('[data-college]').forEach(el=>el.textContent=S.college||'理学院');

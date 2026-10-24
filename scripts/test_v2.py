@@ -136,4 +136,18 @@ class VersionTwoTests(unittest.TestCase):
         self.assertEqual(data['settings']['labIntro'], 'DEMO introduction')
         self.assertEqual(json.loads((self.v2/'data/settings.json').read_text(encoding='utf-8'))['labIntro'], 'Real introduction')
 
+    def test_demo_slides_follow_demo_switch(self):
+        from PIL import Image
+        path = self.root/'media/images/carousel-test.png'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        Image.new('RGB',(200,100),'navy').save(path)
+        settings = {'pageSize':10,'demoMode':False,'slides':[
+                    {'image':'media/images/carousel-test.png','published':True,'layoutDemo':True}]}
+        self.write('versions/v2/data/settings.json', settings)
+        self.assertEqual(self.data()['settings']['slides'], [])
+        settings['demoMode'] = True
+        self.write('versions/v2/data/layout-demo.json', {})
+        self.write('versions/v2/data/settings.json', settings)
+        self.assertEqual(len(self.data()['settings']['slides']),1)
+
 if __name__ == '__main__': unittest.main()
