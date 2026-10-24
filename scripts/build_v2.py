@@ -44,6 +44,11 @@ def build_v2(root=ROOT, dest=None):
     data = {'profile': read(root / 'data/profile.json'),
             'settings': read(source / 'data/settings.json'), 'collections': {}}
     settings = data['settings']
+    if settings.get('demoMode') is True:
+        demo_settings = read(source / 'data/layout-demo.json')
+        allowed_demo_settings = ('teamName', 'labIntro', 'researchAreas', 'admissionsIntro',
+                                 'admissionContacts', 'contactAddress', 'contactPhone', 'contactEmail')
+        settings.update({k: demo_settings[k] for k in allowed_demo_settings if k in demo_settings})
     try:
         page_size = int(settings.get('pageSize', 10))
     except (ValueError, TypeError):
@@ -103,6 +108,9 @@ def build_v2(root=ROOT, dest=None):
         data['collections'][kind].sort(key=lambda v: str(v.get('date', '')), reverse=True)
         data['collections'][kind].sort(key=lambda v: v.get('order', 9999))
     settings.pop('recordOverrides', None)
+    if settings.get('demoMode') is not True:
+        for kind in data['collections']:
+            data['collections'][kind] = [v for v in data['collections'][kind] if not v.get('layoutDemo')]
     assets = Builder(root, dest)
     def asset(value, image=False):
         if not value:

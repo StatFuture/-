@@ -11,5 +11,6 @@
   "teacherHomepage": "",
   "previewPlaceholders": false,
   "showPersonalProfile": false,
-  "showSharedResearch": false
+  "showSharedResearch": false,
+  "demoMode": true
 }

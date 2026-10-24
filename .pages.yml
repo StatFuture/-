@@ -487,6 +487,11 @@ content:
   path: versions/v2/data/settings.json
   format: json
   fields:
+  - name: demoMode
+    label: 显示多数据排版演示
+    type: boolean
+    description: 开启后使用演示介绍和演示记录；关闭并保存后恢复正式资料。演示内容不代表真实团队资料。
+
   - name: showPersonalProfile
     label: 将第一版个人资料展示为团队成员
     type: boolean
@@ -723,6 +728,11 @@ content:
     description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
     options:
       min: 0
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 - name: v2_members
@@ -794,6 +804,11 @@ content:
     description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
     options:
       min: 0
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 - name: v2_resources
@@ -889,6 +904,11 @@ content:
     description: 数字越小越靠前；同序号的新闻按日期从新到旧排列。
     options:
       min: 0
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 - name: v2_overrides
@@ -1043,6 +1063,11 @@ content:
   - name: contributors
     label: 参与成员或负责人
     type: string
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 
@@ -1102,6 +1127,11 @@ content:
     label: 作为所属研究方向的代表成果
     type: boolean
     default: false
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 
@@ -1155,6 +1185,11 @@ content:
     label: 作为所属研究方向的代表成果
     type: boolean
     default: false
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 
@@ -1216,6 +1251,11 @@ content:
     label: 作为所属研究方向的代表成果
     type: boolean
     default: false
+  - name: layoutDemo
+    label: 排版演示记录
+    type: boolean
+    default: false
+    description: 演示开关关闭后隐藏此记录。正式资料请新增记录并保持此项关闭。
   exclude:
   - .gitkeep
 

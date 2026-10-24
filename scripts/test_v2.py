@@ -119,4 +119,21 @@ class VersionTwoTests(unittest.TestCase):
         self.assertEqual(len(records),2)
         self.assertEqual(len({x['id'] for x in records}),2)
 
+    def test_layout_demo_switch_preserves_real_content(self):
+        self.write('versions/v2/data/settings.json', {'pageSize':10,'slides':[],
+                   'showSharedResearch':False,'showPersonalProfile':False,'labIntro':'Real introduction'})
+        self.write('versions/v2/data/layout-demo.json', {'labIntro':'DEMO introduction'})
+        self.write('versions/v2/content/news/real.json', {'title':'Real news','published':True})
+        self.write('versions/v2/content/news/demo.json', {'title':'DEMO news','published':True,'layoutDemo':True})
+        data = self.data()
+        self.assertEqual([x['title'] for x in data['collections']['news']], ['Real news'])
+        self.assertEqual(data['settings']['labIntro'], 'Real introduction')
+        settings = json.loads((self.v2/'data/settings.json').read_text(encoding='utf-8'))
+        settings['demoMode'] = True
+        self.write('versions/v2/data/settings.json', settings)
+        data = self.data()
+        self.assertEqual(len(data['collections']['news']), 2)
+        self.assertEqual(data['settings']['labIntro'], 'DEMO introduction')
+        self.assertEqual(json.loads((self.v2/'data/settings.json').read_text(encoding='utf-8'))['labIntro'], 'Real introduction')
+
 if __name__ == '__main__': unittest.main()
