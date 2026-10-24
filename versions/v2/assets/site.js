@@ -70,18 +70,21 @@ main.addEventListener('change',e=>{if(e.target.matches('#page-size,.page-size'))
 main.addEventListener('keydown',e=>{if(e.target.closest('.hero')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();changeSlide(e.key==='ArrowRight'?'next':'prev')}});
 // A brief dwell prevents accidental navigation while moving across the desktop menu.
 let navigationHoverTimer=null;
+const desktopHoverNavigation=window.matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
 function cancelNavigationHover(){clearTimeout(navigationHoverTimer);navigationHoverTimer=null;}
 for(const link of document.querySelectorAll('#navigation a')){
  link.addEventListener('pointerenter',event=>{
   cancelNavigationHover();
-  if(event.pointerType!=='mouse'||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
-  navigationHoverTimer=setTimeout(()=>{navigationHoverTimer=null;if(link.matches(':hover')&&location.hash!==link.hash)location.hash=link.hash;},160);
+  if(event.pointerType!=='mouse'||!desktopHoverNavigation.matches)return;
+  navigationHoverTimer=setTimeout(()=>{navigationHoverTimer=null;if(desktopHoverNavigation.matches&&link.matches(':hover')&&location.hash!==link.hash)location.hash=link.hash;},160);
  });
  link.addEventListener('pointerleave',cancelNavigationHover);
  link.addEventListener('pointerdown',cancelNavigationHover);
 }
 window.addEventListener('hashchange',cancelNavigationHover);
 window.addEventListener('blur',cancelNavigationHover);
+window.addEventListener('resize',cancelNavigationHover);
+desktopHoverNavigation.addEventListener('change',cancelNavigationHover);
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();main.focus();main.scrollIntoView();});
 window.addEventListener('hashchange',()=>{render();main.focus({preventScroll:true})});render();
 })();
