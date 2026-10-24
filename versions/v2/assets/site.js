@@ -68,6 +68,20 @@ function pageRoute(page,size,group){const r=group?.querySelector('.records');if(
 main.addEventListener('click',e=>{const s=e.target.closest('[data-slide]');if(s){changeSlide(s.dataset.slide);}const p=e.target.closest('button[data-page]');if(p&&!p.disabled){const group=p.closest('.paged-group');pageRoute(p.dataset.page,group.querySelector('.records').dataset.size,group);}});
 main.addEventListener('change',e=>{if(e.target.matches('#page-size,.page-size')){const q=currentQuery();q.delete('page');q.delete('extrabefore');q.delete('extraafter');for(const key of [...q.keys()])if(key.endsWith('Page'))q.delete(key);q.set('size',e.target.value);location.hash=location.hash.split('?')[0]+'?'+q;}});
 main.addEventListener('keydown',e=>{if(e.target.closest('.hero')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();changeSlide(e.key==='ArrowRight'?'next':'prev')}});
+// A brief dwell prevents accidental navigation while moving across the desktop menu.
+let navigationHoverTimer=null;
+function cancelNavigationHover(){clearTimeout(navigationHoverTimer);navigationHoverTimer=null;}
+for(const link of document.querySelectorAll('#navigation a')){
+ link.addEventListener('pointerenter',event=>{
+  cancelNavigationHover();
+  if(event.pointerType!=='mouse'||!window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+  navigationHoverTimer=setTimeout(()=>{navigationHoverTimer=null;if(link.matches(':hover')&&location.hash!==link.hash)location.hash=link.hash;},160);
+ });
+ link.addEventListener('pointerleave',cancelNavigationHover);
+ link.addEventListener('pointerdown',cancelNavigationHover);
+}
+window.addEventListener('hashchange',cancelNavigationHover);
+window.addEventListener('blur',cancelNavigationHover);
 document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();main.focus();main.scrollIntoView();});
 window.addEventListener('hashchange',()=>{render();main.focus({preventScroll:true})});render();
 })();
