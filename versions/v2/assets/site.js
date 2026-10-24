@@ -70,13 +70,14 @@ main.addEventListener('change',e=>{if(e.target.matches('#page-size,.page-size'))
 main.addEventListener('keydown',e=>{if(e.target.closest('.hero')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();changeSlide(e.key==='ArrowRight'?'next':'prev')}});
 // A brief dwell prevents accidental navigation while moving across the desktop menu.
 let navigationHoverTimer=null;
-const desktopHoverNavigation=window.matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
+const desktopHoverNavigation=window.matchMedia('(hover: hover) and (pointer: fine)');
+const usesDesktopNavigation=()=>desktopHoverNavigation.matches&&document.querySelector('.menu-toggle').getClientRects().length===0;
 function cancelNavigationHover(){clearTimeout(navigationHoverTimer);navigationHoverTimer=null;}
 for(const link of document.querySelectorAll('#navigation a')){
  link.addEventListener('pointerenter',event=>{
   cancelNavigationHover();
-  if(event.pointerType!=='mouse'||!desktopHoverNavigation.matches)return;
-  navigationHoverTimer=setTimeout(()=>{navigationHoverTimer=null;if(desktopHoverNavigation.matches&&link.matches(':hover')&&location.hash!==link.hash)location.hash=link.hash;},160);
+  if(event.pointerType!=='mouse'||!usesDesktopNavigation())return;
+  navigationHoverTimer=setTimeout(()=>{navigationHoverTimer=null;if(usesDesktopNavigation()&&link.matches(':hover')&&location.hash!==link.hash)location.hash=link.hash;},160);
  });
  link.addEventListener('pointerleave',cancelNavigationHover);
  link.addEventListener('pointerdown',cancelNavigationHover);
