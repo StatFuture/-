@@ -642,9 +642,9 @@ content:
   - name: slideIntervalSeconds
     label: 每张图片停留时间（秒）
     type: number
-    default: 3
+    default: 2
     options:
-      min: 3
+      min: 2
       max: 15
   - name: previewPlaceholders
     label: 显示待补充的教师与新闻样本位置
