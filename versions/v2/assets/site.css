@@ -43,3 +43,6 @@ body{font-size:15px;line-height:1.85}.masthead{min-height:112px}.logo{width:300p
 @media(max-width:600px){.masthead-band:before{width:100%;opacity:.48;mask-image:linear-gradient(90deg,transparent 32%,#000 85%);-webkit-mask-image:linear-gradient(90deg,transparent 32%,#000 85%)}}
 
 .demo-notice{padding:10px max(18px,calc((100% - 1180px)/2));background:#f7f0df;border-bottom:1px solid #e7dcc1;color:#625438;font-size:13px;line-height:1.75;overflow-wrap:anywhere}.demo-notice[hidden]{display:none}
+
+/* Keep the embedded first-frame preview visible while the full photo loads. */
+.hero img{background:transparent}

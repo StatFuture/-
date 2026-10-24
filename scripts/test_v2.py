@@ -34,6 +34,27 @@ class VersionTwoTests(unittest.TestCase):
         build_v2(self.root)
         for name, digest in before.items():
             self.assertEqual(hashlib.sha256((self.root / '_site' / name).read_bytes()).hexdigest(), digest)
+    def test_carousel_first_frame_does_not_wait_for_scripts(self):
+        from PIL import Image
+        from bs4 import BeautifulSoup
+        image = self.root / 'media/images/first-frame.png'
+        image.parent.mkdir(parents=True, exist_ok=True)
+        Image.new('RGB', (1800, 900), 'navy').save(image)
+        self.write('versions/v2/data/settings.json', {'slides':[
+            {'image':'media/images/first-frame.png','published':True,'order':10},
+            {'image':'media/images/missing.png','published':False}]})
+        data = self.data()
+        slide = data['settings']['slides'][0]
+        self.assertTrue(slide['preview'].startswith('data:image/webp;base64,'))
+        self.assertLess(len(slide['preview']), 16000)
+        for key, width in [('image',1440),('imageSmall',768)]:
+            with Image.open(self.root / '_site/v2' / slide[key]) as img:
+                self.assertEqual(img.width, width)
+        document = BeautifulSoup((self.root / '_site/v2/index.html').read_text(encoding='utf-8'),'html.parser')
+        self.assertEqual(document.select_one('main .hero img')['src'], slide['image'])
+        self.assertEqual(document.select_one('main .hero img')['fetchpriority'], 'high')
+        self.assertEqual(document.select_one('link[as=image]')['href'], slide['image'])
+        self.assertIn(slide['preview'], document.select_one('main .hero')['style'])
     def test_version_specific_isolation_and_hidden_drafts(self):
         self.write('content/news/only-v1.json', {'title':'V1 ONLY', 'published':True})
         self.write('versions/v2/content/news/only-v2.json', {'title':'V2 ONLY', 'published':True})

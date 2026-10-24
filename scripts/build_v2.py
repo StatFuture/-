@@ -1,6 +1,7 @@
 """Build version two without changing the version-one output or its source data."""
 from pathlib import Path
-import copy, hashlib, json, math, shutil
+import base64, copy, hashlib, io, json, math, shutil
+from PIL import Image, ImageOps
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 from build import Builder, read, ROOT
@@ -156,8 +157,35 @@ def build_v2(root=ROOT, dest=None):
             continue
         if slide.get('published') is True and slide.get('image'):
             slide = copy.deepcopy(slide)
-            slide['image'] = asset(slide['image'], True)
+            original = assets.source(slide['image'])
+            # Carousel assets have their own smaller responsive encodings. Originals stay intact.
+            for generated in ('preview', 'imageSmall', 'imageWidth', 'imageHeight'):
+                slide.pop(generated, None)
+            if not urlsplit(original).scheme:
+                with Image.open(root / original) as im:
+                    if im.format not in ('PNG', 'JPEG', 'WEBP'):
+                        raise ValueError('Only PNG/JPEG/WebP carousel images are accepted')
+                    im = ImageOps.exif_transpose(im).convert('RGB')
+                    for field, width in (('image', 1440), ('imageSmall', 768)):
+                        resized = im.copy()
+                        resized.thumbnail((width, width))
+                        buf = io.BytesIO()
+                        resized.save(buf, 'WEBP', quality=75, method=6)
+                        encoded = buf.getvalue()
+                        name = 'assets/carousel-' + hashlib.sha256(encoded).hexdigest()[:16] + '.webp'
+                        (dest / name).write_bytes(encoded)
+                        slide[field] = name
+                        if field == 'image':
+                            slide['imageWidth'], slide['imageHeight'] = resized.size
+                    tiny = im.copy()
+                    tiny.thumbnail((240, 240))
+                    buf = io.BytesIO()
+                    tiny.save(buf, 'WEBP', quality=50)
+                    slide['preview'] = 'data:image/webp;base64,' + base64.b64encode(buf.getvalue()).decode('ascii')
+            else:
+                slide['image'] = original
             slides.append(slide)
+    slides.sort(key=lambda s: (float(s.get('order') or 0), str(s.get('id', ''))))
     settings['slides'] = slides
     for records in data['collections'].values():
         for record in records:
@@ -166,6 +194,28 @@ def build_v2(root=ROOT, dest=None):
     (dest / 'assets/data.js').write_text('window.SITE_DATA = ' + payload + ';\n', encoding='utf-8')
     # A newly published HTML page must not reuse a previous release's cached data/runtime.
     document = BeautifulSoup((dest / 'index.html').read_text(encoding='utf-8'), 'html.parser')
+    # The first frame is visible even before the deferred data/runtime scripts execute.
+    if slides:
+        first = slides[0]
+        preload = document.new_tag('link', rel='preload', **{'as': 'image', 'href': first['image'], 'fetchpriority': 'high'})
+        image = document.new_tag('img', src=first['image'], alt=first.get('caption') or '团队风采照片', loading='eager', decoding='async', fetchpriority='high')
+        if first.get('imageSmall'):
+            srcset = first['imageSmall'] + ' 768w, ' + first['image'] + ' ' + str(first['imageWidth']) + 'w'
+            # Avoid duplicate width descriptors for source images narrower than 768px.
+            if first['imageWidth'] > 768:
+                image['srcset'], image['sizes'] = srcset, '100vw'
+                preload['imagesrcset'], preload['imagesizes'] = srcset, '100vw'
+        def axis(value):
+            try: return max(0, min(100, float(value)))
+            except (TypeError, ValueError): return 50
+        image['style'] = 'object-fit:' + ('cover' if first.get('imageFit') == 'cover' else 'contain') + ';object-position:' + str(axis(first.get('focusX', 50))) + '% ' + str(axis(first.get('focusY', 50))) + '%'
+        hero = document.new_tag('section', **{'class': 'hero', 'aria-label': '团队风采'})
+        if first.get('preview'):
+            hero['style'] = 'background-image:url(' + first['preview'] + ');background-size:' + ('cover' if first.get('imageFit') == 'cover' else 'contain') + ';background-position:' + str(axis(first.get('focusX', 50))) + '% ' + str(axis(first.get('focusY', 50))) + '%;background-repeat:no-repeat'
+        hero.append(image)
+        document.main.clear()
+        document.main.append(hero)
+        document.head.append(preload)
     for node in document.select('script[src], link[rel=stylesheet][href]'):
         attr = 'src' if node.name == 'script' else 'href'
         name = node[attr]
