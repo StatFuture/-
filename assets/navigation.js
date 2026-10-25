@@ -2,6 +2,8 @@
  // Keep tab panels mounted, including their page controls and media state.
  const tabs=[...document.querySelectorAll('[role="tab"]')],panels=[...document.querySelectorAll('[role="tabpanel"]')];
  const positions=new Map();let activeId='',restoreTicket=0,hoverTimer;
+ const scrollRoot=document.documentElement,originalAnchor=scrollRoot.style.overflowAnchor;
+ if('scrollRestoration' in history)history.scrollRestoration='manual';
  const menu=document.querySelector('.menu-toggle');
  const desktopHover=()=>matchMedia('(hover: hover) and (pointer: fine)').matches&&!menu?.getClientRects().length;
  function select(id){
@@ -9,12 +11,14 @@
   const next=tab.getAttribute('aria-controls');
   if(next===activeId)return;
   if(activeId)positions.set(activeId,scrollY);
-  activeId=next;const ticket=++restoreTicket,y=positions.get(next)||0;
+  activeId=next;const ticket=++restoreTicket,y=positions.has(next)?positions.get(next):0;
+  scrollRoot.style.overflowAnchor='none';
   tabs.forEach(t=>{const active=t===tab;t.setAttribute('aria-selected',String(active));t.tabIndex=active?0:-1});
   panels.forEach(p=>p.hidden=p.id!==next);
   document.querySelectorAll('[role=tabpanel][hidden] video').forEach(v=>v.pause());
   document.dispatchEvent(new Event('faculty-tab-selected'));
-  requestAnimationFrame(()=>{if(ticket!==restoreTicket)return;window.scrollTo({top:y,behavior:'instant'});requestAnimationFrame(()=>{if(ticket===restoreTicket)window.scrollTo({top:y,behavior:'instant'})});});
+  window.scrollTo({top:y,behavior:'instant'});
+  requestAnimationFrame(()=>{if(ticket!==restoreTicket)return;window.scrollTo({top:y,behavior:'instant'});requestAnimationFrame(()=>{if(ticket===restoreTicket){window.scrollTo({top:y,behavior:'instant'});scrollRoot.style.overflowAnchor=originalAnchor;}});});
  }
  for(const old of tabs){const fresh=old.cloneNode(true);old.replaceWith(fresh);}
  tabs.splice(0,tabs.length,...document.querySelectorAll('[role="tab"]'));
