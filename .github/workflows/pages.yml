@@ -1,4 +1,4 @@
-name: Build and publish teacher homepage
+name: Build and publish standalone version 1
 on:
   push:
     branches: [main]
@@ -21,13 +21,13 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python scripts/test_build.py
-      - run: python scripts/test_v2.py
       - run: python scripts/build.py
-      - run: python scripts/build_v2.py
+      - run: python scripts/build_redirect.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+          retention-days: 1
   deploy:
     needs: build
     runs-on: ubuntu-latest
